@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        .test-elements {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="result">
+    Test for id select : <span id="id-results"></span>
+</div>
+
+<div class="result">
+    Test for class select : <span id="class-results"></span>
+</div>
+
+<div class="test-elements">
+    <div id="id_xpath" class="test-id"></div>
+
+    <a href="#" class="lnk-class-1 lnk-class-2">link</a>
+    <a href="#" class="lnk-class-1 lnk-class-2 lnk-unique-class">link</a>
+    <a href="#" class="lnk-class-1 lnk-class-2">link</a>
+    <a href="#" class="lnk-class-1 lnk-class-2">link</a>
+    <a href="#" class="lnk-class-1 lnk-class-2">link</a>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="../src/jquery-get-xpath.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+
+        let idTest = 'div#id_xpath' === $('.test-id').jGetXpath()
+            ? '<span class="success">success</span>' : '<span class="error">fail</span>';
+        $('#id-results').html(idTest);
+
+        let classTest = 'a.lnk-unique-class' === $('.lnk-class-1').eq(1).jGetXpath()
+            ? '<span class="success">success</span>' : '<span class="error">fail</span>';
+        $('#class-results').html(classTest);
+
+    });
+</script>
+</body>
+</html>
