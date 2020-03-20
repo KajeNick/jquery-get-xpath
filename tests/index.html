@@ -7,10 +7,16 @@
         .error {
             color: red;
         }
+
         .success {
             color: green;
         }
+
         .test-elements {
+            display: none;
+        }
+
+        ul {
             display: none;
         }
     </style>
@@ -25,6 +31,10 @@
     Test for class select : <span id="class-results"></span>
 </div>
 
+<div class="result">
+    Test for full path select : <span id="full-path-results"></span>
+</div>
+
 <div class="test-elements">
     <div id="id_xpath" class="test-id"></div>
 
@@ -34,6 +44,24 @@
     <a href="#" class="lnk-class-1 lnk-class-2">link</a>
     <a href="#" class="lnk-class-1 lnk-class-2">link</a>
 
+    <div class="test-full-in-class">
+        <div>
+            <ol>
+                <li>Tesla</li>
+                <li>Hyundai</li>
+                <li>BMW</li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <ul>
+        <li>Bananas</li>
+        <li>Apples</li>
+        <li>Strawberries</li>
+    </ul>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -50,6 +78,21 @@
         let classTest = 'a.lnk-unique-class' === $('.lnk-class-1').eq(1).jGetXpath()
             ? '<span class="success">success</span>' : '<span class="error">fail</span>';
         $('#class-results').html(classTest);
+
+        let fullXPath = '/html/body/div[5]/ul/li[2]' === $('ul li:nth-of-type(2)').jGetXpath()
+            ? '<span class="success">success</span>' : '<span class="error">fail</span>';
+        $('#full-path-results').html(idTest);
+
+        let fullXPathWithClass = $('ol li:nth-of-type(2)').jGetXpath(true);
+
+        let forDomXPath = fullXPathWithClass.prepareForDomXPath();
+
+        //  /html/body/div[3]/ol/li[3]
+
+        //  //*[@id="workarea"]/div[1]/div/ul/li[3]/a
+        //  //*[@id="workarea"]/div[2]/section[1]/section/div/div/h1
+        //  //*[contains(@class, 'catalog-item-title')]/a
+        console.log(fullXPathWithClass);
 
     });
 </script>
