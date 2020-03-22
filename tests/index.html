@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        .result {
+            padding: 5px;
+        }
         .error {
             color: red;
         }
@@ -24,15 +27,23 @@
 <body>
 
 <div class="result">
-    Test for id select : <span id="id-results"></span>
+    Select by id : <span id="id-results"></span>
 </div>
 
 <div class="result">
-    Test for class select : <span id="class-results"></span>
+    Select by class : <span id="class-results"></span>
 </div>
 
 <div class="result">
-    Test for full path select : <span id="full-path-results"></span>
+    Get full xpath : <span id="full-path-results"></span>
+</div>
+
+<div class="result">
+    Get full by parent class : <span id="full-xpath-with-class-results"></span>
+</div>
+
+<div class="result">
+    Get full by parent class : <span id="for-dom-xpath-results"></span>
 </div>
 
 <div class="test-elements">
@@ -84,15 +95,14 @@
         $('#full-path-results').html(idTest);
 
         let fullXPathWithClass = $('ol li:nth-of-type(2)').jGetXpath(true);
+        let fullXPathWithClassTest = 'div.test-full-in-class/div/ol/li[2]' === fullXPathWithClass
+            ? '<span class="success">success</span>' : '<span class="error">fail</span>';
+        $('#full-xpath-with-class-results').html(fullXPathWithClassTest);
 
         let forDomXPath = fullXPathWithClass.prepareForDomXPath();
-
-        //  /html/body/div[3]/ol/li[3]
-
-        //  //*[@id="workarea"]/div[1]/div/ul/li[3]/a
-        //  //*[@id="workarea"]/div[2]/section[1]/section/div/div/h1
-        //  //*[contains(@class, 'catalog-item-title')]/a
-        console.log(fullXPathWithClass);
+        let forDomXPathTest = '//*[contains(@class, "test-full-in-class")]/div/ol/li[2]' === forDomXPath
+            ? '<span class="success">success</span>' : '<span class="error">fail</span>';
+        $('#for-dom-xpath-results').html(forDomXPathTest);
 
     });
 </script>

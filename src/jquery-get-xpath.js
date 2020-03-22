@@ -32,13 +32,33 @@
             return null;
         }
 
-        function checkFullPath(that) {
+        function checkFullPath(that, shortParent = false) {
 
             let lastParent = that,
-                path = '';
+                path = '',
+                byClass,
+                byId;
 
             while (0 !== lastParent.length) {
-                path = checkIndex(lastParent) + path;
+
+                if (shortParent) {
+                    byId = checkId(lastParent);
+                    if (null !== byId) {
+                        path = byId + path;
+                        break;
+                    }
+
+                    byClass = checkClass(lastParent);
+                    if (null !== byClass) {
+                        path = byClass + path;
+                        break;
+                    }
+                }
+
+                if (!shortParent || (!byId && !byClass)) {
+                    path = checkIndex(lastParent) + path;
+                }
+
                 lastParent = lastParent.parent();
             }
 
@@ -83,7 +103,7 @@
         }
 
         if (!path) {
-            path = checkFullPath(this);
+            path = checkFullPath(this, shortPath);
         }
 
         return path;
@@ -91,9 +111,22 @@
 
     String.prototype.prepareForDomXPath = function () {
 
-        let domXPath = '';
+        let domXPath = '',
+            elements = this.split('/');
 
+        if (elements[0].length) {
+            if (elements[0].indexOf('#') !== -1) {
+                let splitElement = elements[0].split('#');
+                elements[0] = '//*[@id="' + splitElement[1] + '"]';
+            }
 
+            if (elements[0].indexOf('.') !== -1) {
+                let splitElement = elements[0].split('.');
+                elements[0] = '//*[contains(@class, "' + splitElement[1] + '")]';
+            }
+        }
+
+        domXPath = elements.join('/');
 
         return domXPath.toLowerCase();
     };
